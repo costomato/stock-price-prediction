@@ -6,6 +6,10 @@ app = Flask(__name__)
 
 m = model.Model()
 
+@app.route('/', methods=['GET'])
+def index():
+    return "<center><h2>You've reached stock prediction API home. Please use <br><code><span style='color:red;'> /predict?symbol={symbol}&period={period} </span></code> <br> to get the prediction.</h2></center>"
+
 @app.route('/predict', methods=['GET'])
 def predict():
     symbol = request.args.get('symbol')
