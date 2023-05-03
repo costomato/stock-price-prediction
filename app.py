@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from datetime import date
 import model
 
 app = Flask(__name__)
+CORS(app)
 
 m = model.Model()
 
