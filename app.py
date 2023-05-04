@@ -14,16 +14,18 @@ def index():
 
 @app.route('/predict', methods=['GET'])
 def predict():
-    symbol = request.args.get('symbol')
+    symbol = request.args.get('symbol').upper()
     period = int(request.args.get('period'))
 
     TODAY = date.today().strftime("%Y-%m-%d")
     data = m.load_data(symbol, TODAY)
     if(data.empty):
         return jsonify([])
-    
-    df_train = m.train(data)
-    forecast = m.predict(df_train, period)
+
+    if m.train(data, symbol):
+        m.save_model(f'{symbol}.pkl')
+
+    forecast = m.predict(period)
     forecast_list = forecast_list = [[x[0].strftime('%Y-%m-%d'), x[1]] for x in forecast.values.tolist()]
     # print(forecast_list)
     return jsonify(forecast_list)
